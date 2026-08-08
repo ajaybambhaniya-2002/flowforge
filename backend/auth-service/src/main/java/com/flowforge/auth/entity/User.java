@@ -2,6 +2,7 @@ package com.flowforge.auth.entity;
 import com.flowforge.common.enums.Status;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 @Entity
@@ -28,6 +29,9 @@ public class User extends BaseEntity{
 
     @Column(nullable = false)
     private boolean enabled = true;
+
+    @Column(name = "last_login_at")
+    private LocalDateTime lastLoginAt;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -68,7 +72,13 @@ public class User extends BaseEntity{
     public void setStatus(Status status) {
         this.status = status;
     }
+    public LocalDateTime getLastLoginAt() {
+        return lastLoginAt;
+    }
 
+    public void setLastLoginAt(LocalDateTime lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
+    }
     public boolean isEnabled() {
         return enabled;
     }
