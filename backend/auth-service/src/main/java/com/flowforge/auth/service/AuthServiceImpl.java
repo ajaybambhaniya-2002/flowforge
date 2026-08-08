@@ -5,11 +5,16 @@ import com.flowforge.auth.dto.response.RegisterResponse;
 import com.flowforge.auth.entity.Role;
 import com.flowforge.auth.entity.User;
 import com.flowforge.auth.enums.RoleType;
+import com.flowforge.auth.exception.EmailAlreadyExistsException;
+import com.flowforge.auth.exception.RoleNotFoundException;
+import com.flowforge.auth.exception.UsernameAlreadyExistsException;
 import com.flowforge.auth.repository.RoleRepository;
 import com.flowforge.auth.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 @Transactional
 public class AuthServiceImpl implements AuthService{
 
@@ -29,16 +34,22 @@ public class AuthServiceImpl implements AuthService{
     public RegisterResponse register(RegisterRequest request) {
 
        if(this.userRepository.existsByEmail(request.getEmail())){
-           throw new RuntimeException("Email already exists");
+           throw new UsernameAlreadyExistsException(
+                   request.getUsername()
+           );
        }
 
        if(this.userRepository.existsByUsername(request.getUsername())){
-           throw  new RuntimeException("Username already exists");
+           throw new EmailAlreadyExistsException(
+                   request.getEmail()
+           );
        }
 
         Role role = this.roleRepository.findByRoleName(RoleType.USER.name())
                 .orElseThrow(() ->
-                        new RuntimeException("Default role not found"));
+                        new RoleNotFoundException(
+                                RoleType.USER.name()
+                        ));
 
         User user = new User();
         user.setUsername(request.getUsername());
