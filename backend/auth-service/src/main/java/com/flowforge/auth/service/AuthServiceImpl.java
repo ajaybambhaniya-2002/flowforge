@@ -48,6 +48,6 @@ public class AuthServiceImpl implements AuthService{
 
         User saveUser = this.userRepository.save(user);
 
-         return new RegisterResponse(saveUser.getId(), saveUser.getUsername(), saveUser.getEmail());
+            return new RegisterResponse(saveUser.getId(), saveUser.getUsername(), saveUser.getEmail());
     }
 }
