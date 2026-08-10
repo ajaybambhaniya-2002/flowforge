@@ -1,8 +1,10 @@
 package com.flowforge.auth.controller;
 
 import com.flowforge.auth.dto.request.LoginRequest;
+import com.flowforge.auth.dto.request.RefreshTokenRequest;
 import com.flowforge.auth.dto.request.RegisterRequest;
 import com.flowforge.auth.dto.response.LoginResponse;
+import com.flowforge.auth.dto.response.RefreshTokenResponse;
 import com.flowforge.auth.dto.response.RegisterResponse;
 import com.flowforge.auth.service.AuthService;
 import com.flowforge.common.response.ApiResponse;
@@ -30,6 +32,13 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponse>>login(@Valid @RequestBody LoginRequest loginRequest){
         LoginResponse response = this.authService.login(loginRequest);
        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true, "Login successfully Done", response));
+    }
+
+    @PostMapping("/refresh")
+    public  ResponseEntity<RefreshTokenResponse>refrsh( @Valid @RequestBody RefreshTokenRequest refreshTokenRequest){
+        return ResponseEntity.ok(
+                this.authService.refreshAccessToken(refreshTokenRequest)
+        );
     }
 
     @GetMapping("/test")

@@ -1,5 +1,6 @@
 package com.flowforge.common.exception;
 
+import com.flowforge.common.response.ApiResponse;
 import com.flowforge.common.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +44,16 @@ public class GlobalExceptionHandler {
         response.setErrors((List<String>) errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiResponse<Void>>
+    handleInvalidRefreshToken(
+            UnauthorizedException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ApiResponse<>(false, ex.getMessage(), null));
     }
 }
