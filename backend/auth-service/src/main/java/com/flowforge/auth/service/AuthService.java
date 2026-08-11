@@ -1,6 +1,7 @@
 package com.flowforge.auth.service;
 
 import com.flowforge.auth.dto.request.LoginRequest;
+import com.flowforge.auth.dto.request.LogoutRequest;
 import com.flowforge.auth.dto.request.RefreshTokenRequest;
 import com.flowforge.auth.dto.request.RegisterRequest;
 import com.flowforge.auth.dto.response.LoginResponse;
@@ -15,4 +16,6 @@ public interface AuthService {
 
     RefreshTokenResponse refreshAccessToken(
             RefreshTokenRequest request);
+
+    void logout(LogoutRequest request);
 }

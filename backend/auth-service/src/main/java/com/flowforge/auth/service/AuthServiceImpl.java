@@ -2,6 +2,7 @@ package com.flowforge.auth.service;
 
 import com.flowforge.auth.config.JwtProperties;
 import com.flowforge.auth.dto.request.LoginRequest;
+import com.flowforge.auth.dto.request.LogoutRequest;
 import com.flowforge.auth.dto.request.RefreshTokenRequest;
 import com.flowforge.auth.dto.request.RegisterRequest;
 import com.flowforge.auth.dto.response.LoginResponse;
@@ -140,5 +141,11 @@ public class AuthServiceImpl implements AuthService{
                 newAccessToken,
                 "Bearer"
         );
+    }
+
+    //refresh token logout
+    @Override
+    public void logout(LogoutRequest request) {
+    this.refreshTokenService.revokeToken(request.getRefreshToken());
     }
 }

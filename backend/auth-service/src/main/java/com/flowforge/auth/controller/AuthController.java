@@ -1,6 +1,7 @@
 package com.flowforge.auth.controller;
 
 import com.flowforge.auth.dto.request.LoginRequest;
+import com.flowforge.auth.dto.request.LogoutRequest;
 import com.flowforge.auth.dto.request.RefreshTokenRequest;
 import com.flowforge.auth.dto.request.RegisterRequest;
 import com.flowforge.auth.dto.response.LoginResponse;
@@ -39,6 +40,15 @@ public class AuthController {
         return ResponseEntity.ok(
                 this.authService.refreshAccessToken(refreshTokenRequest)
         );
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @Valid @RequestBody LogoutRequest request) {
+
+        this.authService.logout(request);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/test")
