@@ -19,6 +19,8 @@ import com.flowforge.auth.security.RateLimitService;
 import com.flowforge.common.exception.BadRequestException;
 import com.flowforge.common.exception.UnauthorizedException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,6 +43,7 @@ public class AuthServiceImpl implements AuthService{
     private final PasswordResetTokenService passwordResetTokenService;
     private final RateLimitService rateLimitService;
     private final PasswordPolicy passwordPolicy;
+    private final EmailVerificationTokenService emailVerificationTokenService;
 
     public AuthServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository ,
@@ -50,7 +53,8 @@ public class AuthServiceImpl implements AuthService{
                            RefreshTokenService refreshTokenService,
                            PasswordResetTokenService passwordResetTokenService,
                            RateLimitService rateLimitService,
-                           PasswordPolicy passwordPolicy){
+                           PasswordPolicy passwordPolicy,
+                           EmailVerificationTokenService emailVerificationTokenService){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -60,8 +64,10 @@ public class AuthServiceImpl implements AuthService{
         this.passwordResetTokenService = passwordResetTokenService;
         this.rateLimitService = rateLimitService;
         this.passwordPolicy = passwordPolicy;
+        this.emailVerificationTokenService = emailVerificationTokenService;
     }
-
+    private static final Logger log =
+            LoggerFactory.getLogger(AuthServiceImpl.class);
     // Register API
     @Override
     public RegisterResponse register(RegisterRequest request) {
@@ -90,7 +96,27 @@ public class AuthServiceImpl implements AuthService{
         user.setPassword(this.passwordEncoder.encode(request.getPassword()));
         user.getRoles().add(role);
 
+        // for Email we done this to check email is not verify yet
+        user.setEnabled(false);
         User saveUser = this.userRepository.save(user);
+
+        // for save use emailverificationToken is generated
+        String rawToken =
+                this.emailVerificationTokenService.createToken(
+                        saveUser
+                );
+
+        // 6. Build verification URL
+        String verificationUrl =
+                "http://localhost:4200/verify-email?token="
+                        + rawToken;
+
+        // 7. Local development only
+        log.info(
+                "Email verification link for {}: {}",
+                saveUser.getEmail(),
+                verificationUrl
+        );
 
             return new RegisterResponse(saveUser.getId(), saveUser.getUsername(), saveUser.getEmail());
     }
@@ -266,6 +292,52 @@ public class AuthServiceImpl implements AuthService{
 
         this.refreshTokenService.revokeAllTokens(
                 user
+        );
+    }
+
+    @Override
+    @Transactional
+    public void resendVerification(String email) {
+        String normalizedEmail =
+                email.trim().toLowerCase();
+
+        Optional<User> userOptional =
+                this.userRepository.findByEmail(
+                        normalizedEmail
+                );
+        String key =
+                "flowforge:rate-limit:resend-verification:"
+                        + normalizedEmail;
+        // we check in redis because rate-limit is applied if key came more then 5 time then it throw exception
+        if (!this.rateLimitService.isAllowed(key)) {
+
+            throw new TooManyRequestsException(
+                    "Too many password reset requests"
+            );
+        }
+        if (userOptional.isEmpty()) {
+            return;
+        }
+
+        User user = userOptional.get();
+
+        if (user.isEnabled()) {
+            return;
+        }
+
+        String rawToken =
+                this.emailVerificationTokenService.createToken(
+                        user
+                );
+
+        String verificationUrl =
+                "http://localhost:4200/verify-email?token="
+                        + rawToken;
+
+        log.info(
+                "Email verification link for {}: {}",
+                user.getEmail(),
+                verificationUrl
         );
     }
 }

@@ -67,4 +67,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(
                 new ApiResponse<>(false, ex.getMessage(), null));
     }
+
+    @ExceptionHandler(InvalidVerificationTokenException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidVerificationToken(
+            InvalidVerificationTokenException ex) {
+        return ResponseEntity.badRequest().body(
+                new ApiResponse<>(false, ex.getMessage(), null));
+    }
+
+
 }

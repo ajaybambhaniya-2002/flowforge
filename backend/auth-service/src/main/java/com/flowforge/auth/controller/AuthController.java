@@ -5,6 +5,7 @@ import com.flowforge.auth.dto.response.LoginResponse;
 import com.flowforge.auth.dto.response.RefreshTokenResponse;
 import com.flowforge.auth.dto.response.RegisterResponse;
 import com.flowforge.auth.service.AuthService;
+import com.flowforge.auth.service.EmailVerificationTokenService;
 import com.flowforge.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
+    private final EmailVerificationTokenService emailVerificationTokenService;
+    public AuthController(AuthService authService,
+             EmailVerificationTokenService emailVerificationTokenService) {
         this.authService = authService;
+        this.emailVerificationTokenService = emailVerificationTokenService;
     }
 
     @PostMapping("/register")
@@ -75,6 +78,28 @@ public class AuthController {
                 new ApiResponse<>(true, "Password reset successfully",null)
         );
     }
+
+    @GetMapping("/verify-email")
+    public ResponseEntity<ApiResponse<Void>> verifyEmail(
+            @RequestParam String token) {
+
+        this.emailVerificationTokenService.verifyToken(token);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true,"Email verified successfully",null));
+    }
+
+    @PostMapping("/resend-verification")
+    public ResponseEntity<ApiResponse<Void>> resendVerification(
+            @Valid @RequestBody
+            ResendVerificationRequest request) {
+        this.authService.resendVerification(
+                request.getEmail()
+        );
+        return ResponseEntity.ok(new ApiResponse<>(true,"If the account exists and is not verified, "
+                        + "a verification link has been sent.",null));
+    }
+
     @GetMapping("/test")
     public String testUser(){
         return "done JWT is Working with token";
