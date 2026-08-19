@@ -6,11 +6,13 @@ import com.flowforge.auth.entity.User;
 
 import com.flowforge.auth.repository.RefreshTokenRepository;
 import com.flowforge.common.exception.UnauthorizedException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -141,5 +143,20 @@ public class RefreshTokenService {
         refreshToken.setRevoked(true);
 
         this.refreshTokenRepository.save(refreshToken);
+    }
+
+    // method is called at time of reset token to revoke all refresh token of that user
+    @Transactional
+    public void revokeAllTokens(User user) {
+
+        List<RefreshToken> tokens =
+                this.refreshTokenRepository
+                        .findByUserAndRevokedFalse(user);
+
+        for (RefreshToken token : tokens) {
+            token.setRevoked(true);
+        }
+
+        this.refreshTokenRepository.saveAll(tokens);
     }
 }

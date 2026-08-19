@@ -48,12 +48,23 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ApiResponse<Void>>
-    handleInvalidRefreshToken(
+    public ResponseEntity<ApiResponse<Void>> handleInvalidRefreshToken(
             UnauthorizedException ex) {
-
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiResponse<>(false, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(TooManyRequestsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTooManyRequests(
+            TooManyRequestsException ex) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(new ApiResponse<>(false, ex.getMessage(), null));
+    }
+    @ExceptionHandler(WeakPasswordException.class)
+    public ResponseEntity<ApiResponse<Void>> handleWeakPassword(
+            WeakPasswordException ex) {
+        return ResponseEntity.badRequest().body(
+                new ApiResponse<>(false, ex.getMessage(), null));
     }
 }
