@@ -1,0 +1,42 @@
+@use './styles/theme';
+:root {
+  --ff-primary: #0a74da;
+  --ff-primary-dark: #075cae;
+  --ff-background: #f5f7fa;
+  --ff-surface: #ffffff;
+  --ff-text: #1f2937;
+  --ff-border: #d9dee7;
+}
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+// @use '@angular/material' as mat;
+
+// html {
+//   @include mat.theme((
+//     color: (
+//       primary: mat.$azure-palette,
+//       tertiary: mat.$blue-palette,
+//     ),
+//     typography: Roboto,
+//     density: 0,
+//   ));
+// }
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ff-background);
+  color: var(--ff-text);
+  font-family: Roboto, Arial, sans-serif;
+}

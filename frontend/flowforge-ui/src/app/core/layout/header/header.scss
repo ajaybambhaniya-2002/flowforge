@@ -1,0 +1,23 @@
+.header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  background: var(--ff-surface);
+  border-bottom: 1px solid var(--ff-border);
+}
+
+.brand-name {
+  color: var(--ff-primary);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
