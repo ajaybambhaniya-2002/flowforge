@@ -1,0 +1,109 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="login-header">
+      <h1>FlowForge</h1>
+      <p>Welcome back! Please login to your account.</p>
+    </div>
+
+    <form [formGroup]="loginForm">
+
+      <mat-form-field appearance="outline">
+
+  <mat-label>Username</mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="username"
+        placeholder="Enter your username"
+        autocomplete="username">
+
+      @if (
+        loginForm.controls.username.touched &&
+        loginForm.controls.username.hasError('required')
+      ) {
+        <mat-error>
+          Username is required
+        </mat-error>
+      }
+
+</mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          placeholder="Enter password"
+          formControlName="password"
+          >
+           <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            class="password-toggle"
+            (click)="hidePassword = !hidePassword">
+
+            <mat-icon>
+              {{ hidePassword ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+
+          </button>
+          
+        @if (
+          loginForm.controls.password.touched &&
+          loginForm.controls.password.hasError('required')  
+        ) {
+          <mat-error>
+            password is required
+          </mat-error>
+        }
+        @if (
+          loginForm.controls.password.touched &&
+          loginForm.controls.password.hasError('pattern')
+        ) {
+          <mat-error>
+            Please Enter Valid Password
+          </mat-error>
+        }
+
+      </mat-form-field>
+
+      <div class="forgot-password">
+        <a routerLink="/auth/forgot-password">
+          Forgot Password?
+        </a>
+      </div>
+
+      <button
+        mat-flat-button
+        type="submit"
+        class="login-button"
+        (click)="onLogin()"
+        [disabled]="loginForm.invalid || isLoading">
+
+         @if (isLoading) {
+          <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            Login
+          }
+          
+      </button>
+
+    </form>
+
+    <div class="register-link">
+      <!-- <button (click)="onTest()">Test</button> -->
+      <span>Don't have an account?</span>
+
+      <a routerLink="/auth/register">
+        Register
+      </a>
+    </div>
+
+  </div>
+
+</div>

@@ -1,5 +1,4 @@
-import { Component, signal } from '@angular/core';
-import { environment } from '../environments/environment';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
@@ -8,9 +7,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
-    constructor() {
-    console.log('API URL:', environment.apiUrl);
-  }
+    constructor() {}
   protected readonly title = signal('flowforge-ui');
  
 }
