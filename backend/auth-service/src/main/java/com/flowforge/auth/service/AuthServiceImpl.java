@@ -146,8 +146,8 @@ public class AuthServiceImpl implements AuthService{
                         userDetails.getUser()
                 );
         // it return JWT Token
-        return new LoginResponse(token,
-                refreshToken.getToken(),"Bearer");
+        return new LoginResponse(token,"Bearer",
+                    refreshToken.getToken());
     }
 
 
@@ -157,15 +157,15 @@ public class AuthServiceImpl implements AuthService{
 
     //For Refresh Token Generation added
     @Override
-    public RefreshTokenResponse refreshAccessToken(RefreshTokenRequest request) {
+    public RefreshTokenResponse refreshAccessToken(String refreshToken) {
 
-        RefreshToken refreshToken =
+        RefreshToken refreshTokenData =
                 refreshTokenService
                         .getValidRefreshToken(
-                                request.getRefreshToken()
+                                refreshToken
                         );
 
-        User user = refreshToken.getUser();
+        User user = refreshTokenData.getUser();
 
         CustomUserDetails userDetails =
                 new CustomUserDetails(user);

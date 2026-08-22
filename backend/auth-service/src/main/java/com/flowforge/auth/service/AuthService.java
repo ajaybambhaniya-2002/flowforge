@@ -12,7 +12,7 @@ public interface AuthService {
     LoginResponse login(LoginRequest loginRequest);
 
     RefreshTokenResponse refreshAccessToken(
-            RefreshTokenRequest request);
+            String refreshToken);
 
     void logout(LogoutRequest request);
 

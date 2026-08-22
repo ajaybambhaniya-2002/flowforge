@@ -8,9 +8,13 @@ import com.flowforge.auth.service.AuthService;
 import com.flowforge.auth.service.EmailVerificationTokenService;
 import com.flowforge.common.response.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -29,17 +33,47 @@ public class AuthController {
        RegisterResponse response = this.authService.register(request);
        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "User registered successfully", response));
     }
+
+
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>>login(@Valid @RequestBody LoginRequest loginRequest){
         LoginResponse response = this.authService.login(loginRequest);
-       return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true, "Login successfully Done", response));
+        ResponseCookie refreshTokenCookie =
+                ResponseCookie
+                        .from(
+                                "refreshToken",
+                                response.getRefreshToken()
+                        )
+                        .httpOnly(true)
+                        .secure(false)
+                        .sameSite("Lax")
+                        .path("/")
+                        .maxAge(Duration.ofDays(7))
+                        .build();
+
+        // no need to send refresh token in response body we storing that in HttpOnly Cookie for safe and security
+        response.setRefreshToken(null);
+
+        return ResponseEntity.status(HttpStatus.OK)
+               .header(
+                HttpHeaders.SET_COOKIE,
+                refreshTokenCookie.toString())
+               .body(new ApiResponse<>(true, "Login successfully Done", response));
     }
 
     @PostMapping("/refresh")
-    public  ResponseEntity<RefreshTokenResponse>refrsh( @Valid @RequestBody RefreshTokenRequest refreshTokenRequest){
-        return ResponseEntity.ok(
-                this.authService.refreshAccessToken(refreshTokenRequest)
-        );
+    public  ResponseEntity<RefreshTokenResponse>refrsh( @CookieValue(name = "refreshToken", required = false)
+                                                             String refreshToken){
+        if (refreshToken == null || refreshToken.isBlank()) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build();
+        }
+
+        RefreshTokenResponse response =
+                this.authService.refreshAccessToken(refreshToken);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
