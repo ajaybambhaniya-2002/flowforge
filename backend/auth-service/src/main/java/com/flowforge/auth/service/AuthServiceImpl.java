@@ -181,8 +181,8 @@ public class AuthServiceImpl implements AuthService{
 
     //refresh token logout
     @Override
-    public void logout(LogoutRequest request) {
-    this.refreshTokenService.revokeToken(request.getRefreshToken());
+    public void logout(String refreshToken) {
+    this.refreshTokenService.revokeToken(refreshToken);
     }
 
     //change password

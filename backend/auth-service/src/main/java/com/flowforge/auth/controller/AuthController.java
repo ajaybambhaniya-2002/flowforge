@@ -76,11 +76,11 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/logout")
+        @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            @Valid @RequestBody LogoutRequest request) {
+                @CookieValue("refreshToken") String refreshToken) {
 
-        this.authService.logout(request);
+        this.authService.logout(refreshToken);
 
         return ResponseEntity.noContent().build();
     }
