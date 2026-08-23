@@ -9,7 +9,7 @@ export class MessageDisplayService {
 
   success(message: string): void {
     this.snackBar.open(message, 'Close', {
-      duration: 3000,
+      duration: 4500,
       panelClass: ['snackbar-success'],
       horizontalPosition: 'center',
       verticalPosition: 'bottom'

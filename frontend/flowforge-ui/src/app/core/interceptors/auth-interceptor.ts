@@ -14,7 +14,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const isAuthRequest =
     req.url.includes('/auth/login') ||
     req.url.includes('/auth/refresh') ||
-    req.url.includes('/auth/register');
+    req.url.includes('/auth/register') ||
+    req.url.includes('/auth/logout'); 
 //These requests don’t need an Authorization header because they are used to obtain or refresh tokens.
   if (isAuthRequest) {
     return next(req);

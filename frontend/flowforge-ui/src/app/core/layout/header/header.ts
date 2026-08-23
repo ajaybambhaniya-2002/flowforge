@@ -31,11 +31,12 @@ logout():void{
   dialogRef.afterClosed().subscribe((confirmed: boolean) => {
 
     if (confirmed) {
-      // actual logout
-      this.authStateService.setUnauthenticated();
-      this.tokenService.clearAccessToken();
-      this.router.navigate(['/auth/login']);
-      // this.authService.logout();
+      this.authService.logout().subscribe((res:any)=>{
+        console.log(res);
+        this.authStateService.setUnauthenticated();
+        this.tokenService.clearAccessToken();
+        this.router.navigate(['/auth/login']);
+      })
     }
 
   });
