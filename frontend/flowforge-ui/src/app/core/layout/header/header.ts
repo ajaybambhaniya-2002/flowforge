@@ -1,15 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { AuthStateService } from '../../services/auth-state-service';
 import { TokenService } from '../../services/token-service';
 import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { MatMenuModule } from '@angular/material/menu';
 @Component({
   selector: 'app-header',
-  imports: [MatButtonModule,MatIcon],
+  imports: [MatButtonModule,MatIcon, MatButtonModule,
+    MatMenuModule,
+    MatIconModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -41,6 +44,9 @@ logout():void{
 
   });
   // we need to clean up at time of logout
+}
+onLinkClickRoute(){
+  this.router.navigate(['/profile'])
 }
 TestApiConcurrent(){
 this.authService.testApi().subscribe((res:any)=>{

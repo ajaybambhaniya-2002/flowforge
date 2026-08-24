@@ -72,7 +72,6 @@ export class ResetPassword {
 
   return null;
 
-  return null;
 }
 
   onResetPassword(){

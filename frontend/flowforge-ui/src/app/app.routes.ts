@@ -5,6 +5,7 @@ import { Login } from './features/auth/pages/login/login';
 import { authGuard } from './core/guards/auth-guard';
 import { ForgotPassword } from './features/auth/pages/forgot-password/forgot-password';
 import { ResetPassword } from './features/auth/pages/reset-password/reset-password';
+import { RegistrationForm } from './features/auth/pages/registration-form/registration-form';
 
 export const routes: Routes = [
   {
@@ -14,11 +15,19 @@ export const routes: Routes = [
     {
     path:'',
     component: MainLayout,
+    canActivate: [authGuard],
     children: [
-      {
-        path:'dashboard',
-        canActivate: [authGuard],
-        component: Dashboard
+       {
+      path: 'dashboard',
+      loadComponent: () =>
+        import('./features/dashboard/pages/dashboard/dashboard')
+          .then(m => m.Dashboard)
+      },    
+       {
+      path: 'profile',
+      loadComponent: () =>
+        import('./features/profile/pages/profile/profile')
+          .then(m => m.Profile)
       },    
       {
         path: '',
@@ -30,6 +39,10 @@ export const routes: Routes = [
   {
      path: 'auth/forgot-password',
      component:ForgotPassword
+  },
+  {
+     path: 'auth/register',
+     component:RegistrationForm
   },
   {
      path: 'auth/reset-password',

@@ -5,9 +5,11 @@ import { catchError, switchMap, tap, throwError } from 'rxjs';
 import { Auth } from '../services/auth';
 import { AuthStateService } from '../services/auth-state-service';
 import { TokenRefreshService } from '../services/token-refresh-service';
+import { Router } from '@angular/router';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenService);
   const authService = inject(Auth);
+  const router = inject(Router);
   const authStateService = inject(AuthStateService);
   const tokenRefreshService = inject(TokenRefreshService);
 
@@ -46,14 +48,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => error);
       }
       
-      // when 401 or 403 happen need to generate new one
+      // when 401 or 403 happen need to generate new one  //  Access token expired/invalid
       return tokenRefreshService.refreshToken().pipe(
-
+      //  Get newly generated access token
         switchMap(() => {
 
           const newToken =
             tokenService.getAccessToken();
 
+          // Retry original request
           const retryRequest = req.clone({
             setHeaders: {
               Authorization: `Bearer ${newToken}`
@@ -62,12 +65,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
           return next(retryRequest);
         }),
-
+           //  Refresh token also failed
         catchError((refreshError) => {
-
+          
           tokenService.clearAccessToken();
 
           authStateService.setUnauthenticated();
+
+          router.navigate(['/auth/login']);
 
           return throwError(() => refreshError);
         })
