@@ -2,6 +2,7 @@ package com.flowforge.auth.service;
 
 import com.flowforge.auth.dto.request.*;
 import com.flowforge.auth.dto.response.LoginResponse;
+import com.flowforge.auth.dto.response.ProfileResponse;
 import com.flowforge.auth.dto.response.RefreshTokenResponse;
 import com.flowforge.auth.dto.response.RegisterResponse;
 import com.flowforge.auth.entity.*;
@@ -18,6 +19,7 @@ import com.flowforge.auth.security.JwtService;
 import com.flowforge.auth.security.RateLimitService;
 import com.flowforge.common.exception.BadRequestException;
 import com.flowforge.common.exception.UnauthorizedException;
+import com.flowforge.common.response.PageResponse;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,9 +181,23 @@ public class AuthServiceImpl implements AuthService{
         );
     }
 
+    @Override
+    public ProfileResponse profile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails =
+                (CustomUserDetails)
+                        authentication.getPrincipal();
+        User user = userDetails.getUser();
+        return new ProfileResponse(user.getUsername(),user.getEmail());
+    }
+
     //refresh token logout
     @Override
+<<<<<<< Updated upstream
     public void logout(String refreshToken) {
+=======
+    public void logout( String refreshToken) {
+>>>>>>> Stashed changes
     this.refreshTokenService.revokeToken(refreshToken);
     }
 
