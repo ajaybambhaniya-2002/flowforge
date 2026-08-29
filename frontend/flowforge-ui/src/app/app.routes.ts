@@ -23,12 +23,18 @@ export const routes: Routes = [
         import('./features/dashboard/pages/dashboard/dashboard')
           .then(m => m.Dashboard)
       },    
-       {
+       { 
       path: 'profile',
       loadComponent: () =>
         import('./features/profile/pages/profile/profile')
           .then(m => m.Profile)
-      },    
+      },
+      {
+          path: 'profile/change-password',
+          loadComponent: () =>
+            import('./features/profile/pages/change-password/change-password')
+              .then(m => m.ChangePassword)
+        },    
       {
         path: '',
         redirectTo: 'dashboard',

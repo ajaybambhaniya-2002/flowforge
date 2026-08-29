@@ -6,11 +6,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MessageDisplayService } from '../../../../core/services/message-display-service';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-profile',
   imports: [MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    RouterLink,
     ReactiveFormsModule,
     MatIconModule,],
   templateUrl: './profile.html',
@@ -25,21 +27,14 @@ profileForm = new FormGroup({
 
 })
 ngOnInit(): void {
-  this.loading = true;
   this.authService.getProfileData().subscribe(
     {
     next: (response:any) => {
       this.profileForm.controls.username.setValue(response?.data?.username);
       this.profileForm.controls.email.setValue(response?.data?.email);
       this.makeFormFieldDisable();
-
-      this.loading = false;
     },
-
     error: (error) => {
-
-      this.loading = false;
-
      this.messageDisplayService.error('Unable to load profile. Please try again.') ;
     }
   })

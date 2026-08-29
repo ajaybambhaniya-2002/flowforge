@@ -2,6 +2,7 @@ package com.flowforge.auth.controller;
 
 import com.flowforge.auth.dto.request.*;
 import com.flowforge.auth.dto.response.LoginResponse;
+import com.flowforge.auth.dto.response.ProfileResponse;
 import com.flowforge.auth.dto.response.RefreshTokenResponse;
 import com.flowforge.auth.dto.response.RegisterResponse;
 import com.flowforge.auth.service.AuthService;
@@ -75,12 +76,21 @@ public class AuthController {
 
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/profile")
+    public ResponseEntity<ApiResponse<ProfileResponse>>profile(){
+        ProfileResponse response = this.authService.profile();
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,"Data Fetch successfully",response));
+    }
 
-    @PostMapping("/logout")
+        @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            @Valid @RequestBody LogoutRequest request) {
+<<<<<<< Updated upstream
+                @CookieValue("refreshToken") String refreshToken) {
+=======
+            @CookieValue("refreshToken") String refreshToken) {
+>>>>>>> Stashed changes
 
-        this.authService.logout(request);
+        this.authService.logout(refreshToken);
 
         return ResponseEntity.noContent().build();
     }

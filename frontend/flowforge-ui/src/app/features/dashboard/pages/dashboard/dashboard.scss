@@ -3,34 +3,153 @@
 }
 
 .dashboard-header {
-  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+
+  h1 {
+    margin: 0 0 8px;
+    color: var(--ff-primary);
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 15px;
+  }
 }
 
-.dashboard-header h1 {
-  margin: 0 0 8px;
-  color: var(--ff-primary);
-  font-size: 28px;
-  font-weight: 600;
+.dashboard-content {
+  width: 100%;
 }
 
-.dashboard-header p {
-  margin: 0;
-  color: #6b7280;
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
 .dashboard-card {
+  padding: 20px 22px;
+  background: var(--ff-surface);
+  border: 1px solid var(--ff-border);
+  border-radius: 12px;
+  min-height: 110px;
+  box-sizing: border-box;
+}
+
+.stat-title {
+  margin: 0 0 12px;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.stat-value {
+  margin: 0;
+  color: #1f2937;
+  font-size: 28px;
+  font-weight: 600;
+}
+.recent-projects {
+  margin-top: 32px;
   padding: 24px;
+
   background: var(--ff-surface);
   border: 1px solid var(--ff-border);
   border-radius: 12px;
 }
 
-.dashboard-card h2 {
-  margin: 0 0 8px;
-  font-size: 20px;
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  button {
+    color: var(--ff-primary);
+    font-weight: 500;
+  }
 }
 
-.dashboard-card p {
-  margin: 0;
+.projects-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 24px;
+
+  padding: 18px 0;
+
+  border-bottom: 1px solid var(--ff-border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.project-info {
+  h3 {
+    margin: 0 0 5px;
+
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  p {
+    margin: 0;
+
+    font-size: 14px;
+    color: #6b7280;
+  }
+}
+
+.project-status {
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  &.active {
+    color: #166534;
+    background: #dcfce7;
+  }
+
+  &.completed {
+    color: #1d4ed8;
+    background: #dbeafe;
+  }
+}
+
+.project-date {
+  min-width: 80px;
+
+  text-align: right;
+
+  font-size: 13px;
   color: #6b7280;
 }

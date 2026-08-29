@@ -8,4 +8,22 @@ import { Component } from '@angular/core';
 })
 export class Dashboard {
 
+  dashboardStats = [
+    {
+      title: 'Total Projects',
+      value: 12
+    },
+    {
+      title: 'Active Projects',
+      value: 8
+    },
+    {
+      title: 'Total Tasks',
+      value: 48
+    },
+    {
+      title: 'Team Members',
+      value: 6
+    }
+  ];
 }

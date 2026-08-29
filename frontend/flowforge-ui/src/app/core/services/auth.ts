@@ -45,6 +45,9 @@ export class Auth {
     return this.http.get(`${environment.apiUrl}/api/v1/auth/verify-email`, { params: { token } });
   }
 
+  changePassword(payload:any){
+    return this.http.post(`${environment.apiUrl}/api/v1/auth/change-password`,payload)
+  }
   refreshAccessToken() {
     return this.http.post<any>(
       `${environment.apiUrl}/api/v1/auth/refresh`,
