@@ -147,8 +147,8 @@ public class AuthServiceImpl implements AuthService{
                         userDetails.getUser()
                 );
         // it return JWT Token
-        return new LoginResponse(token,
-                refreshToken.getToken(),"Bearer");
+        return new LoginResponse(token,"Bearer",
+                refreshToken.getToken());
     }
 
 

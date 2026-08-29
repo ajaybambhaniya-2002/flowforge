@@ -153,3 +153,325 @@
   font-size: 13px;
   color: #6b7280;
 }
+/* ==============================
+   Recent Projects
+   ============================== */
+
+.recent-projects {
+  margin-top: 24px;
+  padding: 24px;
+
+  background: var(--ff-surface);
+  border: 1px solid var(--ff-border);
+  border-radius: 12px;
+}
+
+
+/* Section Header */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0 0 4px;
+
+    color: #1f2937;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  button {
+    color: var(--ff-primary);
+    font-weight: 500;
+  }
+}
+
+
+/* Projects Table */
+
+.projects-table {
+  width: 100%;
+}
+
+
+/* Row */
+
+.project-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(220px, 2fr)
+    minmax(100px, 1fr)
+    minmax(100px, 1fr)
+    minmax(120px, 1fr);
+
+  align-items: center;
+
+  min-height: 68px;
+
+  border-bottom: 1px solid var(--ff-border);
+}
+
+
+/* Header */
+
+.project-header {
+  min-height: 44px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* Project Name */
+
+.project-name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    color: #1f2937;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  span {
+    color: #6b7280;
+    font-size: 13px;
+  }
+}
+
+
+/* Status */
+
+.project-status {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* Active */
+
+.status-active {
+  color: #166534;
+  background: #dcfce7;
+}
+
+
+/* Completed */
+
+.status-completed {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+
+/* Planning */
+
+.status-planning {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+
+/* Tasks */
+
+.project-tasks {
+  color: #374151;
+  font-size: 14px;
+}
+
+
+/* Last Updated */
+
+.project-updated {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* Last row */
+
+.project-row:last-child {
+  border-bottom: none;
+}
+
+
+/* ==============================
+   Responsive
+   ============================== */
+
+@media (max-width: 768px) {
+
+  .recent-projects {
+    padding: 16px;
+  }
+
+  .project-header {
+    display: none;
+  }
+
+  .project-row {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+
+    padding: 16px 0;
+  }
+
+  .project-name {
+    grid-column: 1;
+  }
+
+  .project-status {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .project-tasks,
+  .project-updated {
+    grid-column: 1 / -1;
+  }
+}
+/* =========================================
+   Dashboard Analytics
+   ========================================= */
+
+.dashboard-analytics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.analytics-header {
+  margin-bottom: 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #172b4d;
+  }
+
+  p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: #6b778c;
+  }
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.analytics-card {
+  background: #ffffff;
+  border: 1px solid #dfe5ec;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.analytics-card-header {
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  span {
+    display: block;
+    margin-top: 6px;
+    color: #6b7280;
+    font-size: 14px;
+  }
+}
+
+.chart-placeholder {
+  min-height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+
+  color: #7a869a;
+  font-size: 14px;
+  background: #fafbfc;
+}
+
+
+/* =========================================
+   Responsive
+   ========================================= */
+
+@media (max-width: 900px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.dashboard-analytics {
+  margin-top: 24px;
+}
+
+.analytics-card {
+  background: #ffffff;
+  border: 1px solid #dfe5ec;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.analytics-card-header {
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  span {
+    display: block;
+    margin-top: 6px;
+    color: #6b7280;
+    font-size: 14px;
+  }
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+@media (max-width: 900px) {
+  .dashboard-analytics {
+    grid-template-columns: 1fr;
+  }
+}

@@ -25,75 +25,165 @@
 
     </div>
 
+   <!-- Recent Projects -->
     <div class="recent-projects">
 
-        <div class="section-header">
-          <div>
-            <h2>Recent Projects</h2>
-            <p>Your recently updated projects</p>
-          </div>
-
-          <button mat-button type="button">
-            View All
-          </button>
+      <div class="section-header">
+        <div>
+          <h2>Recent Projects</h2>
+          <p>Your recently updated projects</p>
         </div>
 
-        <div class="projects-list">
+        <button
+          mat-button
+          type="button">
+          View All
+        </button>
+      </div>
 
-          <div class="project-item">
+      <div class="projects-table">
 
-            <div class="project-info">
-              <h3>FlowForge</h3>
-              <p>Project management platform</p>
-            </div>
+        <!-- Header -->
+        <div class="project-row project-header">
+          <span>Project</span>
+          <span>Status</span>
+          <span>Tasks</span>
+          <span>Last Updated</span>
+        </div>
 
-            <span class="project-status active">
-              Active
-            </span>
+        <!-- Project 1 -->
+        <div class="project-row">
 
-            <span class="project-date">
-              Today
-            </span>
-
+          <div class="project-name">
+            <strong>FlowForge</strong>
+            <span>Core platform development</span>
           </div>
 
-          <div class="project-item">
+          <span class="project-status status-active">
+            Active
+          </span>
 
-            <div class="project-info">
-              <h3>CRM System</h3>
-              <p>Customer relationship management</p>
-            </div>
+          <span class="project-tasks">
+            18 / 24
+          </span>
 
-            <span class="project-status active">
-              Active
-            </span>
-
-            <span class="project-date">
-              Yesterday
-            </span>
-
-          </div>
-
-          <div class="project-item">
-
-            <div class="project-info">
-              <h3>Task Manager</h3>
-              <p>Team task management application</p>
-            </div>
-
-            <span class="project-status completed">
-              Completed
-            </span>
-
-            <span class="project-date">
-              3 days ago
-            </span>
-
-          </div>
+          <span class="project-updated">
+            2 hours ago
+          </span>
 
         </div>
+
+        <!-- Project 2 -->
+        <div class="project-row">
+
+          <div class="project-name">
+            <strong>Customer Portal</strong>
+            <span>Customer management portal</span>
+          </div>
+
+          <span class="project-status status-active">
+            Active
+          </span>
+
+          <span class="project-tasks">
+            12 / 20
+          </span>
+
+          <span class="project-updated">
+            Yesterday
+          </span>
+
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-row">
+
+          <div class="project-name">
+            <strong>Payment Service</strong>
+            <span>Payment processing service</span>
+          </div>
+
+          <span class="project-status status-completed">
+            Completed
+          </span>
+
+          <span class="project-tasks">
+            15 / 15
+          </span>
+
+          <span class="project-updated">
+            2 days ago
+          </span>
+
+        </div>
+
+        <!-- Project 4 -->
+        <div class="project-row">
+
+          <div class="project-name">
+            <strong>Notification System</strong>
+            <span>Email and notification service</span>
+          </div>
+
+          <span class="project-status status-planning">
+            Planning
+          </span>
+
+          <span class="project-tasks">
+            3 / 18
+          </span>
+
+          <span class="project-updated">
+            3 days ago
+          </span>
+
+        </div>
+
+      </div>
 
     </div>
+ <section class="dashboard-analytics">
+
+    <!-- Project Status -->
+    <div class="analytics-card">
+
+      <div class="analytics-card-header">
+        <h2>Project Status</h2>
+        <span>Project distribution</span>
+      </div>
+
+      <div class="chart-container">
+        <canvas
+          baseChart
+          [type]="projectStatusChartType"
+          [data]="projectStatusChartData"
+          [options]="projectStatusChartOptions">
+        </canvas>
+      </div>
+
+    </div>
+
+
+    <!-- Project Progress -->
+    <div class="analytics-card">
+
+      <div class="analytics-card-header">
+        <h2>Project Task Progress</h2>
+        <span>Completed and remaining tasks</span>
+      </div>
+
+      <div class="chart-container">
+        <canvas
+          baseChart
+          [type]="projectProgressChartType"
+          [data]="projectProgressChartData"
+          [options]="projectProgressChartOptions">
+        </canvas>
+      </div>
+
+    </div>
+
+  </section>
   </div>
 
 </div>
