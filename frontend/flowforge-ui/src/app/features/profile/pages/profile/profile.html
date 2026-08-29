@@ -1,0 +1,60 @@
+<div class="profile-page">
+
+  <div class="profile-card">
+
+    <div class="profile-header">
+      <h2>My Profile</h2>
+      <p>View your account information</p>
+    </div>
+      <form [formGroup]="profileForm">
+          <div class="profile-content">
+         <mat-form-field appearance="outline">
+          
+             <mat-label class="labelColor">Username</mat-label>
+             <input
+               matInput
+             
+               type="text"
+               formControlName="username">
+          
+         </mat-form-field>
+           <mat-form-field appearance="outline">
+            <mat-label class="labelColor">Email</mat-label>
+             <input
+               matInput
+          
+               type="text"
+               formControlName="email">
+          
+       </mat-form-field>
+      
+          </div>
+      </form>
+      <div class="profile-section">
+
+  <div class="section-header">
+    <h3>Security</h3>
+    <p>Manage your account security.</p>
+  </div>
+
+  <div class="security-item">
+
+    <div class="security-info">
+      <h4>Change Password</h4>
+      <p>Update your password to keep your account secure.</p>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      routerLink="/profile/change-password">
+      Change Password
+    </button>
+
+  </div>
+
+</div>
+
+  </div>
+
+</div>

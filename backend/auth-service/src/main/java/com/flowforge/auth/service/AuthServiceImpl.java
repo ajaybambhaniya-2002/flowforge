@@ -19,7 +19,6 @@ import com.flowforge.auth.security.JwtService;
 import com.flowforge.auth.security.RateLimitService;
 import com.flowforge.common.exception.BadRequestException;
 import com.flowforge.common.exception.UnauthorizedException;
-import com.flowforge.common.response.PageResponse;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,8 +147,8 @@ public class AuthServiceImpl implements AuthService{
                         userDetails.getUser()
                 );
         // it return JWT Token
-        return new LoginResponse(token,"Bearer",
-                    refreshToken.getToken());
+        return new LoginResponse(token,
+                refreshToken.getToken(),"Bearer");
     }
 
 
@@ -161,7 +160,7 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public RefreshTokenResponse refreshAccessToken(String refreshToken) {
 
-        RefreshToken refreshTokenData =
+        RefreshToken refreshTokenData  =
                 refreshTokenService
                         .getValidRefreshToken(
                                 refreshToken
@@ -180,7 +179,6 @@ public class AuthServiceImpl implements AuthService{
                 "Bearer"
         );
     }
-
     @Override
     public ProfileResponse profile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -190,17 +188,11 @@ public class AuthServiceImpl implements AuthService{
         User user = userDetails.getUser();
         return new ProfileResponse(user.getUsername(),user.getEmail());
     }
-
     //refresh token logout
     @Override
-<<<<<<< Updated upstream
     public void logout(String refreshToken) {
-=======
-    public void logout( String refreshToken) {
->>>>>>> Stashed changes
-    this.refreshTokenService.revokeToken(refreshToken);
+        this.refreshTokenService.revokeToken(refreshToken);
     }
-
     //change password
     @Override
     @Transactional

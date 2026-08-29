@@ -1,0 +1,147 @@
+<div class="register-page">
+
+  <div class="register-card">
+
+    <div class="register-header">
+      <h1>FlowForge</h1>
+      <p>Create your account</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
+      <!-- Username -->
+      <mat-form-field appearance="outline">
+
+        <mat-label>Username</mat-label>
+
+        <input
+          matInput
+          type="text"
+          formControlName="username"
+          placeholder="Enter your username"
+          autocomplete="username">
+
+        @if (
+          registerForm.controls.username.touched &&
+          registerForm.controls.username.hasError('required')
+        ) {
+          <mat-error>
+            Username is required
+          </mat-error>
+        }
+
+      </mat-form-field>
+
+
+      <!-- Email -->
+      <mat-form-field appearance="outline">
+
+        <mat-label>Email</mat-label>
+
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+          autocomplete="email">
+
+        @if (
+          registerForm.controls.email.touched &&
+          registerForm.controls.email.hasError('required')
+        ) {
+          <mat-error>
+            Email is required
+          </mat-error>
+        }
+
+        @if (
+          registerForm.controls.email.touched &&
+          registerForm.controls.email.hasError('email')
+        ) {
+          <mat-error>
+            Please enter a valid email
+          </mat-error>
+        }
+
+      </mat-form-field>
+
+
+      <!-- Password -->
+      <mat-form-field appearance="outline">
+
+        <mat-label>Password</mat-label>
+
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          placeholder="Enter password"
+          formControlName="password"
+          >
+           <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            class="password-toggle"
+            (click)="hidePassword = !hidePassword">
+
+            <mat-icon>
+              {{ hidePassword ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+
+          </button>
+
+        @if (
+          registerForm.controls.password.touched &&
+          registerForm.controls.password.hasError('required')
+        ) {
+          <mat-error>
+            Password is required
+          </mat-error>
+        }
+
+        @if (
+          registerForm.controls.password.touched &&
+          registerForm.controls.password.hasError('pattern')
+        ) {
+          <mat-error>
+            Password must contain at least 8 characters,
+            uppercase, lowercase, number and special character
+          </mat-error>
+        }
+
+      </mat-form-field>
+
+
+      <!-- Register -->
+      <button
+        mat-flat-button
+        type="submit"
+        class="register-button"
+        [disabled]="registerForm.invalid">
+        @if (isLoading) {
+
+        <mat-spinner diameter="20"></mat-spinner>
+
+        }@else{
+
+            Register
+        }
+
+      </button>
+
+    </form>
+
+
+    <div class="login-link">
+
+      <span>Already have an account?</span>
+
+      <a routerLink="/auth/login">
+        Login
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

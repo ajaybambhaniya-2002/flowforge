@@ -1,0 +1,100 @@
+.login-page {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: var(--ff-background);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 32px;
+
+  background: var(--ff-surface);
+
+  border: 1px solid var(--ff-border);
+  border-radius: 12px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.login-header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.login-header h1 {
+  margin: 0 0 8px;
+
+  color: var(--ff-primary);
+
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.login-header p {
+  margin: 0;
+
+  color: #6b7280;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.forgot-password {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-bottom: 20px;
+}
+
+.forgot-password a,
+.register-link a {
+  color: var(--ff-primary);
+  text-decoration: none;
+}
+
+.login-button {
+  width: 100%;
+  height: 48px;
+}
+
+.register-link {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+
+  margin-top: 24px;
+
+  font-size: 14px;
+}
+
+button {
+  min-height: 48px;
+
+  mat-spinner {
+    margin: 0 auto;
+  }
+}
+.password-toggle {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin-right: 4px;
+
+  mat-icon {
+    font-size: 21px;
+    width: 21px;
+    height: 21px;
+    margin-right: 5px;
+    color: #898787;
+  }
+}

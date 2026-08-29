@@ -1,0 +1,43 @@
+<header class="header">
+
+  <div class="header-left">
+    <span class="logo">FlowForge</span>
+  </div>
+
+  <div class="header-right ">
+
+    <button
+      mat-button
+      [matMenuTriggerFor]="userMenu"
+      class="user-menu-button">
+
+      <mat-icon>account_circle</mat-icon>
+
+      <span>User</span>
+
+      <mat-icon>arrow_drop_down</mat-icon>
+
+    </button>
+
+    <mat-menu #userMenu="matMenu">
+
+      <button mat-menu-item
+       (click)="onLinkClickRoute()">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+
+      <button
+        mat-menu-item
+        (click)="logout()">
+
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+
+      </button>
+
+    </mat-menu>
+
+  </div>
+
+</header>

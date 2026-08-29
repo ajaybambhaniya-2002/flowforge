@@ -84,11 +84,8 @@ public class AuthController {
 
         @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-<<<<<<< Updated upstream
                 @CookieValue("refreshToken") String refreshToken) {
-=======
-            @CookieValue("refreshToken") String refreshToken) {
->>>>>>> Stashed changes
+
 
         this.authService.logout(refreshToken);
 
