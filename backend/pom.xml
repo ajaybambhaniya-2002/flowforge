@@ -23,6 +23,7 @@
         <module>common-library</module>
         <module>gateway-service</module>
         <module>auth-service</module>
+        <module>project-service</module>
     </modules>
     <properties>
         <java.version>21</java.version>

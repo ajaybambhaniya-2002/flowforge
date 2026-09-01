@@ -23,6 +23,30 @@ export const routes: Routes = [
         import('./features/dashboard/pages/dashboard/dashboard')
           .then(m => m.Dashboard)
       },    
+       {
+      path: 'projectList',
+      loadComponent: () =>
+        import('./features/projects/pages/project-list/project-list')
+          .then(m => m.ProjectList)
+      }, 
+      {
+      path: 'projects/edit/:id',
+      loadComponent: () =>
+        import('./features/projects/pages/edit-project/edit-project')
+          .then(m => m.EditProject)
+      } , 
+      {
+      path: 'project/details/:id',
+      loadComponent: () =>
+        import('./features/projects/pages/project-detail/project-detail')
+          .then(m => m.ProjectDetail)
+      },
+       {
+      path: 'createProject',
+      loadComponent: () =>
+        import('./features/projects/pages/project-create/project-create')
+          .then(m => m.ProjectCreate)
+      },    
        { 
       path: 'profile',
       loadComponent: () =>

@@ -1,0 +1,139 @@
+<div class="project-details-page">
+
+  <div class="page-header">
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="backToProjects()">
+
+      ← Back to Projects
+
+    </button>
+
+  </div>
+
+
+  @if (project) {
+
+    <div class="details-card">
+
+      <div class="details-header">
+
+        <div>
+
+          <h1>
+            {{ project.name }}
+          </h1>
+
+          <p>
+            {{ project.description }}
+          </p>
+
+        </div>
+
+        <button
+          mat-icon-button
+          class="edit-icon"
+          matTooltip="Edit project"
+          aria-label="Edit project"
+          (click)="editProject()">
+
+          <mat-icon>edit</mat-icon>
+
+        </button>
+
+      </div>
+
+
+      <div class="details-divider"></div>
+
+
+      <div class="details-grid">
+
+        <!-- Status -->
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Status
+          </span>
+
+          <span
+            class="status-badge"
+            [class.active]="project.status === 'Active'"
+            [class.completed]="project.status === 'Completed'"
+            [class.planning]="project.status === 'Planning'">
+
+            {{ project.status }}
+
+          </span>
+
+        </div>
+
+
+        <!-- Tasks -->
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Tasks
+          </span>
+
+          <span class="detail-value">
+            {{ project.completedTasks }} /
+            {{ project.totalTasks }}
+          </span>
+
+        </div>
+
+
+        <!-- Last Updated -->
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Last Updated
+          </span>
+
+          <span class="detail-value">
+            {{ project.lastUpdated }}
+          </span>
+
+        </div>
+
+
+        <!-- Progress -->
+        <div class="detail-item progress-item">
+
+          <span class="detail-label">
+            Progress
+          </span>
+
+          <div class="progress-container">
+
+            <div class="progress-info">
+
+              <span>
+                {{ getProgress() }}%
+              </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+              <div
+                class="progress-fill"
+                [style.width.%]="getProgress()">
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

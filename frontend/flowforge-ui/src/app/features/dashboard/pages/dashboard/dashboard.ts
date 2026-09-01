@@ -1,15 +1,27 @@
 import { Component } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { Router, RouterLink } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
-  imports: [BaseChartDirective],
+  imports: [BaseChartDirective,MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    MatIconModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
-
+  constructor(private route:Router) {
+    
+  }
   dashboardStats = [
     {
       title: 'Total Projects',
@@ -90,4 +102,7 @@ public projectProgressChartOptions: ChartConfiguration<'bar'>['options'] = {
     }
   }
 };
+onClickRoute(){
+  this.route.navigate(['/projectList'])
+}
 }

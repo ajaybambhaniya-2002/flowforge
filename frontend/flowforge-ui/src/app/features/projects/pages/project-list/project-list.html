@@ -1,0 +1,165 @@
+<div class="projects-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Projects</h1>
+      <p>Manage your projects</p>
+    </div>
+
+    <button type="button" (click)="onClickRouteToCreateProject()">
+      + New Project
+    </button>
+  </div>
+
+
+  <div class="project-filters">
+
+    <input
+      type="text"
+      class="search-box"
+      placeholder="Search projects..."
+      [(ngModel)]="searchText"
+    />
+
+    <select
+      class="status-filter"
+      [(ngModel)]="selectedStatus">
+
+      <option value="All">All Status</option>
+      <option value="Active">Active</option>
+      <option value="Completed">Completed</option>
+      <option value="Planning">Planning</option>
+
+    </select>
+
+  </div>
+
+
+  @if (filteredProjects.length > 0) {
+
+    <div class="projects-table-container">
+
+      <table class="projects-table">
+
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Tasks</th>
+            <th>Last Updated</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (project of filteredProjects; track project.id) {
+
+            <tr>
+
+              <td>
+                <div class="project-name">
+                  {{ project.name }}
+                </div>
+              </td>
+
+              <td>
+                <div class="project-description">
+                  {{ project.description }}
+                </div>
+              </td>
+
+              <td>
+                <span
+                  class="status-badge"
+                  [class.status-active]="project.status === 'Active'"
+                  [class.status-completed]="project.status === 'Completed'"
+                  [class.status-planning]="project.status === 'Planning'"
+                  [class.status-on-hold]="project.status === 'On Hold'">
+
+                  {{ project.status }}
+
+                </span>
+              </td>
+
+              <td>
+
+                <div class="task-progress">
+
+                  <span class="progress-text">
+                    {{ project.completedTasks }} / {{ project.totalTasks }}
+                  </span>
+
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      [style.width.%]="
+                        (project.completedTasks / project.totalTasks) * 100
+                      ">
+                    </div>
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="last-updated">
+                  {{ project.lastUpdated }}
+                </span>
+              </td>
+                <td>
+                <div class="project-actions">
+                     <button
+                    mat-icon-button
+                    class="view-icon"
+                    matTooltip="View project"
+                    aria-label="View project"
+                    (click)="viewProject(project.id)">
+
+                    <mat-icon>visibility</mat-icon>
+
+                </button>
+                    <button
+                        mat-icon-button
+                        class="edit-icon"
+                        matTooltip="Edit project"
+                        aria-label="Edit project"
+                        (click)="editProject(project.id)">
+
+                        <mat-icon>edit</mat-icon>
+
+                        </button>
+
+                        <button
+                        mat-icon-button
+                        class="delete-icon"
+                        matTooltip="Delete project"
+                        aria-label="Delete project"
+                        (click)="deleteProject(project.id)">
+
+                        <mat-icon>delete</mat-icon>
+
+                        </button>
+                </div>
+            </td>
+ </tr>
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  } @else {
+
+    <div class="empty-state">
+      <h2>No projects found</h2>
+      <p>Try changing your search or status filter.</p>
+    </div>
+
+  }
+
+</div>
