@@ -4,8 +4,11 @@ import com.flowforge.project.dto.request.CreateProjectRequest;
 import com.flowforge.project.dto.request.UpdateProjectRequest;
 import com.flowforge.project.dto.response.ProjectResponse;
 import com.flowforge.project.entity.Project;
+import com.flowforge.project.entity.ProjectStatus;
 import com.flowforge.project.repository.ProjectRepository;
 
+import com.flowforge.project.security.AuthenticatedUser;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +22,29 @@ public class ProjectService {
     public  ProjectService(ProjectRepository projectRepository){
         this.projectRepository = projectRepository;
     }
-    public ProjectResponse createProject(CreateProjectRequest request){
+    public ProjectResponse createProject(
+            CreateProjectRequest request) {
+
+        AuthenticatedUser authenticatedUser =
+                (AuthenticatedUser) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+
+        Long userId =
+                authenticatedUser.getUserId();
+
         Project project = new Project();
+
         project.setName(request.getName());
         project.setDescription(request.getDescription());
+        project.setProjectKey(request.getProjectKey());
+        project.setStatus(ProjectStatus.ACTIVE);
+        project.setOwnerId(userId);
 
-        Project savedProject = this.projectRepository.save(project);
+        Project savedProject =
+                this.projectRepository.save(project);
+
         return mapToResponse(savedProject);
     }
 

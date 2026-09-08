@@ -32,8 +32,24 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
 
+        String role = userDetails.getAuthorities()
+                .stream()
+                .findFirst()
+                .map(authority -> authority.getAuthority())
+                .orElseThrow(() ->
+                        new IllegalStateException(
+                                "User role not found"
+                        )
+                );
+
+        Long userId = ((CustomUserDetails) userDetails)
+                .getUser()
+                .getId();
+
         return Jwts.builder()
                 .subject(userDetails.getUsername())
+                .claim("userId", userId)
+                .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(
                         new Date(

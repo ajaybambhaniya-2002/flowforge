@@ -22,7 +22,7 @@ public class Project {
     private String projectKey;
 
     @Column(nullable = false)
-    private UUID ownerId;
+    private Long ownerId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -65,11 +65,11 @@ public class Project {
         this.projectKey = projectKey;
     }
 
-    public UUID getOwnerId() {
+    public Long getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(UUID ownerId) {
+    public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
 
@@ -96,5 +96,14 @@ public class Project {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
