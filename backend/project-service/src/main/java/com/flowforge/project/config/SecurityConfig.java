@@ -57,7 +57,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 org.springframework.http.HttpMethod.POST,
                                 "/api/projects/**"
-                        ).hasRole("ADMIN")
+                        ).hasAnyRole("USER", "ADMIN")
 
                         .requestMatchers(
                                 org.springframework.http.HttpMethod.PUT,
@@ -67,7 +67,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 org.springframework.http.HttpMethod.DELETE,
                                 "/api/projects/**"
-                        ).hasRole("ADMIN")
+                        ).hasAnyRole("USER", "ADMIN")
 
                         .anyRequest().authenticated()
                 )

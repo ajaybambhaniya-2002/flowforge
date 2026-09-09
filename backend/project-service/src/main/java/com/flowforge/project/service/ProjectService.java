@@ -8,6 +8,7 @@ import com.flowforge.project.entity.ProjectStatus;
 import com.flowforge.project.repository.ProjectRepository;
 
 import com.flowforge.project.security.AuthenticatedUser;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,43 +52,107 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public List<ProjectResponse> getAllProjects() {
 
-        return this.projectRepository.findAll()
-                .stream()
+        List<Project> projects;
+
+        if (isAdmin()) {
+
+            projects = projectRepository.findAll();
+
+        } else {
+
+            Long userId = getAuthenticatedUserId();
+
+            projects = projectRepository
+                    .findByOwnerId(userId);
+        }
+
+        return projects.stream()
                 .map(this::mapToResponse)
                 .toList();
     }
+
+
     @Transactional(readOnly = true)
     public ProjectResponse getProjectById(UUID id) {
 
         Project project = this.projectRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Project not found with id: " + id)
+                        new RuntimeException(
+                                "Project not found with id: " + id
+                        )
                 );
+
+        // ADMIN can access all projects
+        validateProjectAccess(project);
 
         return mapToResponse(project);
     }
-    public ProjectResponse updateProject(UUID id, UpdateProjectRequest request){
-        Project project = this.projectRepository.findById(id).orElseThrow(()->
-                new RuntimeException("Project not found with id: " + id));
+
+
+    public ProjectResponse updateProject(
+            UUID id,
+            UpdateProjectRequest request) {
+
+        Project project =
+                this.projectRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Project not found with id: " + id
+                                ));
+
+        // ADMIN can update any project
+        validateProjectAccess(project);
 
         project.setName(request.getName());
         project.setDescription(request.getDescription());
-        Project updateProject = this.projectRepository.save(project);
-        return mapToResponse(updateProject);
 
+        Project updatedProject =
+                this.projectRepository.save(project);
+
+        return mapToResponse(updatedProject);
     }
+
+
+
+
 
     public void deleteProject(UUID id) {
 
-        Project project = this.projectRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Project not found with id: " + id)
-                );
+        Project project =
+                this.projectRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Project not found with id: " + id
+                                ));
+
+        // ADMIN can delete any project
+        validateProjectAccess(project);
 
         this.projectRepository.delete(project);
     }
+    private Long getAuthenticatedUserId() {
 
-    public ProjectResponse mapToResponse(Project project){
+        AuthenticatedUser authenticatedUser =
+                (AuthenticatedUser) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+
+        return authenticatedUser.getUserId();
+    }
+    private boolean isAdmin() {
+
+        return SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .anyMatch(authority ->
+                        authority.getAuthority()
+                                .equals("ROLE_ADMIN")
+                );
+    }
+        public ProjectResponse mapToResponse(Project project){
         ProjectResponse response = new ProjectResponse();
         response.setId(project.getId());
         response.setName(project.getName());
@@ -97,7 +162,23 @@ public class ProjectService {
         return  response;
 
     }
+    private void validateProjectAccess(Project project) {
 
+        // ADMIN can access any project
+        if (isAdmin()) {
+            return;
+        }
+
+        // USER can access only their own project
+        Long userId = getAuthenticatedUserId();
+
+        if (!project.getOwnerId().equals(userId)) {
+
+            throw new AccessDeniedException(
+                    "You do not have access to this project"
+            );
+        }
+    }
 
 
 
