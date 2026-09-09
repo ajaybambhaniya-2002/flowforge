@@ -1,5 +1,6 @@
 package com.flowforge.project.config;
 
+import com.flowforge.project.security.CustomAccessDeniedHandler;
 import com.flowforge.project.security.CustomAuthenticationEntryPoint;
 import com.flowforge.project.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
@@ -14,12 +15,15 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomAuthenticationEntryPoint    authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
-            CustomAuthenticationEntryPoint authenticationEntryPoint) {
+            CustomAuthenticationEntryPoint authenticationEntryPoint,
+            CustomAccessDeniedHandler accessDeniedHandler) {
 
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
@@ -37,6 +41,8 @@ public class SecurityConfig {
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(
                                 authenticationEntryPoint
+                        ).accessDeniedHandler(
+                                accessDeniedHandler
                         )
                 )
                 .authorizeHttpRequests(auth -> auth
