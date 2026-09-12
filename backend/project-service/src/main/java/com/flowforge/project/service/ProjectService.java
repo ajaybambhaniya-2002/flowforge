@@ -5,6 +5,7 @@ import com.flowforge.project.dto.request.UpdateProjectRequest;
 import com.flowforge.project.dto.response.ProjectResponse;
 import com.flowforge.project.entity.Project;
 import com.flowforge.project.entity.ProjectStatus;
+import com.flowforge.project.exception.ProjectNotFoundException;
 import com.flowforge.project.repository.ProjectRepository;
 
 import com.flowforge.project.security.AuthenticatedUser;
@@ -77,7 +78,7 @@ public class ProjectService {
 
         Project project = this.projectRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ProjectNotFoundException(
                                 "Project not found with id: " + id
                         )
                 );
@@ -96,7 +97,7 @@ public class ProjectService {
         Project project =
                 this.projectRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ProjectNotFoundException(
                                         "Project not found with id: " + id
                                 ));
 
@@ -105,6 +106,7 @@ public class ProjectService {
 
         project.setName(request.getName());
         project.setDescription(request.getDescription());
+        project.setStatus(request.getStatus());
 
         Project updatedProject =
                 this.projectRepository.save(project);
@@ -121,7 +123,7 @@ public class ProjectService {
         Project project =
                 this.projectRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ProjectNotFoundException(
                                         "Project not found with id: " + id
                                 ));
 
@@ -157,6 +159,7 @@ public class ProjectService {
         response.setId(project.getId());
         response.setName(project.getName());
         response.setDescription(project.getDescription());
+        response.setStatus(project.getStatus());
         response.setCreatedAt(project.getCreatedAt());
         response.setUpdatedAt(project.getUpdatedAt());
         return  response;

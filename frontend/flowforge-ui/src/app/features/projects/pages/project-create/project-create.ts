@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { ProjectService } from '../../../project-service';
+import { MessageDisplayService } from '../../../../core/services/message-display-service';
 @Component({
   selector: 'app-project-create',
   imports: [ReactiveFormsModule,
@@ -27,7 +28,9 @@ import { ProjectService } from '../../../project-service';
   styleUrl: './project-create.scss',
 })
 export class ProjectCreate {
-  constructor(private router :Router,private projectService:ProjectService){}  
+  constructor(private router :Router,private projectService:ProjectService,
+    private messageDisplayService:MessageDisplayService
+  ){}  
   loading:boolean = false;
  projectForm = new FormGroup({
 
@@ -55,20 +58,19 @@ if (this.projectForm.invalid) {
   this.loading = true;
 
   const project : any = {
-    id: Date.now(),
     name: this.projectForm.controls.name.value!,
     description: this.projectForm.controls.description.value!,
-    status: this.projectForm.controls.status.value!,
-    completedTasks: 0,
-    totalTasks: 0,
-    lastUpdated: 'Just now'
+    projectKey: 'Fresh'!,
   };
 
-  this.projectService.createProject(project);
+ this.projectService.createProject(project).subscribe((res:any)=>{
+    this.loading = false;
+    this.messageDisplayService.success(res?.message);
+    this.router.navigate(['/projectList']);
+ })
 
-  this.loading = false;
 
-  this.router.navigate(['/projectList']);
+
   }
 
 

@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ProjectService } from '../../../project-service';
 import { MatSelectModule } from '@angular/material/select';
+import { MessageDisplayService } from '../../../../core/services/message-display-service';
 @Component({
   selector: 'app-edit-project',
   imports: [ReactiveFormsModule,
@@ -29,8 +30,8 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class EditProject {
  loading = false;
-  projectId!: number;
-  project: Project | undefined;
+  projectId!: any;
+  project:any = []
 
   projectForm = new FormGroup({
     name: new FormControl('', [
@@ -53,37 +54,44 @@ export class EditProject {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private messageDisplayService:MessageDisplayService
   ) {}
 
   ngOnInit(): void {
 
-    this.projectId = Number(
-      this.route.snapshot.paramMap.get('id')
-    );
+    this.projectId = this.route.snapshot.paramMap.get('id')
+    
+   this.projectService.getProjectById(this.projectId).subscribe({
+    next:(res:any)=>{
+      this.loadProject(res?.data);
+    },
+    error:(error)=>{
+      console.error('Failed to load projects', error);
+    }
+    });
 
-    this.loadProject();
+    
   }
+idForUpdate:any;
+  loadProject(restemp:any): void {
 
-  loadProject(): void {
 
-    this.project = this.projectService.getProjectById(this.projectId);
-
-    if (!this.project) {
+    if (!restemp) {
       this.router.navigate(['/projects']);
       return;
     }
-
+    this.idForUpdate = restemp?.id;
     this.projectForm.controls.name.setValue(
-      this.project.name
+      restemp?.name
     );
 
     this.projectForm.controls.description.setValue(
-      this.project.description
+      restemp?.description
     );
 
     this.projectForm.controls.status.setValue(
-      this.project.status
+      restemp?.status
     );
   }
 
@@ -96,19 +104,22 @@ export class EditProject {
 
     this.loading = true;
 
-    const updatedProject: any = {
-      ...this.project!,
-      name: this.projectForm.controls.name.value!,
-      description: this.projectForm.controls.description.value!,
-      status: this.projectForm.controls.status.value!,
-      lastUpdated: 'Just now'
+    const payload: any = {
+     
+      name: this.projectForm?.controls?.name?.value,
+      description: this.projectForm?.controls?.description?.value,
+      status: this.projectForm?.controls?.status?.value,
     };
 
-    this.projectService.updateProject(updatedProject);
+    this.projectService.updateProject(this.idForUpdate,payload).subscribe((res:any)=>{
+      if(res){
+        this.loading = false;
+        this.messageDisplayService.success(res?.message);
+        this.router.navigate(['/projectList']);
+        
+      }
+    });
 
-    this.loading = false;
-
-    this.router.navigate(['/projectList']);
   }
 
   cancel(): void {

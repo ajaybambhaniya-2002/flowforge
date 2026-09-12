@@ -60,9 +60,9 @@
 
           <span
             class="status-badge"
-            [class.active]="project.status === 'Active'"
-            [class.completed]="project.status === 'Completed'"
-            [class.planning]="project.status === 'Planning'">
+            [class.active]="project.status === 'ACTIVE'"
+            [class.completed]="project.status === 'COMPLETED'"
+            [class.planning]="project.status === 'PLANNING'">
 
             {{ project.status }}
 
@@ -72,7 +72,7 @@
 
 
         <!-- Tasks -->
-        <div class="detail-item">
+        <!-- <div class="detail-item">
 
           <span class="detail-label">
             Tasks
@@ -83,7 +83,7 @@
             {{ project.totalTasks }}
           </span>
 
-        </div>
+        </div> -->
 
 
         <!-- Last Updated -->
@@ -94,14 +94,14 @@
           </span>
 
           <span class="detail-value">
-            {{ project.lastUpdated }}
+            {{ project.updatedAt | date:'dd-MM-yyyy' }}
           </span>
 
         </div>
 
 
         <!-- Progress -->
-        <div class="detail-item progress-item">
+        <!-- <div class="detail-item progress-item">
 
           <span class="detail-label">
             Progress
@@ -128,7 +128,7 @@
 
           </div>
 
-        </div>
+        </div> -->
 
       </div>
 

@@ -25,10 +25,10 @@
       class="status-filter"
       [(ngModel)]="selectedStatus">
 
-      <option value="All">All Status</option>
-      <option value="Active">Active</option>
-      <option value="Completed">Completed</option>
-      <option value="Planning">Planning</option>
+      <option value="ALL">All Status</option>
+      <option value="ACTIVE">Active</option>
+      <option value="COMPLETED">Completed</option>
+      <option value="PLANNING">Planning</option>
 
     </select>
 
@@ -46,8 +46,8 @@
             <th>Project</th>
             <th>Description</th>
             <th>Status</th>
-            <th>Tasks</th>
-            <th>Last Updated</th>
+            <!-- <th>Tasks</th> -->
+            <!-- <th>Last Updated</th> -->
             <th>Actions</th>
           </tr>
         </thead>
@@ -71,19 +71,19 @@
               </td>
 
               <td>
-                <span
-                  class="status-badge"
-                  [class.status-active]="project.status === 'Active'"
-                  [class.status-completed]="project.status === 'Completed'"
-                  [class.status-planning]="project.status === 'Planning'"
-                  [class.status-on-hold]="project.status === 'On Hold'">
+               <span
+                class="status-badge"
+                [class.status-active]="project.status === 'ACTIVE'"
+                [class.status-completed]="project.status === 'COMPLETED'"
+                [class.status-planning]="project.status === 'PLANNING'"
+                [class.status-on-hold]="project.status === 'ON_HOLD'">
 
-                  {{ project.status }}
+                {{ project.status }}
 
-                </span>
+              </span>
               </td>
 
-              <td>
+              <!-- <td>
 
                 <div class="task-progress">
 
@@ -102,13 +102,13 @@
 
                 </div>
 
-              </td>
+              </td> -->
 
-              <td>
+              <!-- <td>
                 <span class="last-updated">
                   {{ project.lastUpdated }}
                 </span>
-              </td>
+              </td> -->
                 <td>
                 <div class="project-actions">
                      <button

@@ -24,7 +24,7 @@ public class SecurityConfig {
 
 
         http.csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
+//                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/register",

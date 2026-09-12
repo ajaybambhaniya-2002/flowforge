@@ -17,6 +17,7 @@ import { ProjectService } from '../../../project-service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../../core/components/confirm-dialog/confirm-dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MessageDisplayService } from '../../../../core/services/message-display-service';
 @Component({
   selector: 'app-project-list',
   imports: [ReactiveFormsModule,
@@ -30,51 +31,27 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './project-list.scss',
 })
 export class ProjectList implements OnInit{
-   constructor(private router :Router, private projectService:ProjectService){} 
+   constructor(private router :Router, private projectService:ProjectService,
+    private messageDisplayService :MessageDisplayService
+   ){} 
      private dialog = inject(MatDialog); 
   ngOnInit(): void {
-    this.projects = this.projectService.getProjects();
+     this.projectService.getAllProjects().subscribe({
+          next: (response: any) => {
+
+            this.projects = response.data;
+
+          },
+          error: (error) => {
+
+            console.error('Failed to load projects', error);
+
+          }
+        });
   }
     searchText: string = '';
-  selectedStatus: string = 'All';
-projects: Project[] = [
-  {
-    id: 1,
-    name: 'FlowForge',
-    description: 'Core platform development',
-    status: 'Active',
-    completedTasks: 18,
-    totalTasks: 24,
-    lastUpdated: '2 hours ago'
-  },
-  {
-    id: 2,
-    name: 'Customer Portal',
-    description: 'Customer management portal',
-    status: 'Active',
-    completedTasks: 12,
-    totalTasks: 20,
-    lastUpdated: 'Yesterday'
-  },
-  {
-    id: 3,
-    name: 'Payment Service',
-    description: 'Payment processing service',
-    status: 'Completed',
-    completedTasks: 15,
-    totalTasks: 15,
-    lastUpdated: '2 days ago'
-  },
-  {
-    id: 4,
-    name: 'Notification System',
-    description: 'Email and notification service',
-    status: 'Planning',
-    completedTasks: 3,
-    totalTasks: 18,
-    lastUpdated: '3 days ago'
-  }
-];
+  selectedStatus: string = 'ALL';
+  projects: Project[]  = [];
   get filteredProjects(): Project[] {
     return this.projects.filter(project => {
 
@@ -87,15 +64,15 @@ projects: Project[] = [
           .includes(this.searchText.toLowerCase());
 
       const matchesStatus =
-        this.selectedStatus === 'All' ||
-        project.status === this.selectedStatus;
+          this.selectedStatus === 'ALL' ||
+          project.status === this.selectedStatus;
 
       return matchesSearch && matchesStatus;
     });
   }
-editProject(projectId: number): void {
-  this.router.navigate(['/projects/edit', projectId]);
-}
+  editProject(projectId: number): void {
+    this.router.navigate(['/projects/edit', projectId]);
+  }
   onClickRouteToCreateProject(){
     this.router.navigate(['/createProject'])
   }
@@ -112,7 +89,7 @@ editProject(projectId: number): void {
   const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '400px',
       data: {
-        title: 'Logout',
+        title: 'Delete Project',
         message: `Are you sure you want to delete "${project.name}"?`,
         confirmText: 'Yes',
         cancelText: 'No'
@@ -120,14 +97,18 @@ editProject(projectId: number): void {
     });
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-              this.projects = this.projects.filter(
-          project => project.id !== projectId
-        );
+            this.projectService.deleteProject(projectId).subscribe((res:any)=>{
+               this.messageDisplayService.success('Project Deleted Successfully');
+                const index = this.projects.findIndex(p => p.id === projectId);
+                if (index !== -1) {
+                  this.projects.splice(index, 1);
+                }
+            })
       }
   
     });
 }
-viewProject(projectId: number): void {
+viewProject(projectId: any): void {
 
   this.router.navigate([
     '/project/details',

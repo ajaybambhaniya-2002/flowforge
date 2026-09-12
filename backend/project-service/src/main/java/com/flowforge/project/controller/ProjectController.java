@@ -5,6 +5,7 @@ import com.flowforge.project.dto.request.CreateProjectRequest;
 import com.flowforge.project.dto.request.UpdateProjectRequest;
 import com.flowforge.project.dto.response.ProjectResponse;
 import com.flowforge.project.service.ProjectService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @GetMapping("/getAllProjects")
+    @GetMapping
     public ResponseEntity<ApiResponse<List<ProjectResponse>>> getAllProjects() {
         return  ResponseEntity.status(HttpStatus.OK).
                 body(new ApiResponse<>(true,"All Project Data Fetch successfully",this.projectService.getAllProjects()));
@@ -34,22 +35,24 @@ public class ProjectController {
     }
 
     @PostMapping("/createProject")
-    public ResponseEntity<ApiResponse<ProjectResponse>>createProject( @RequestBody CreateProjectRequest request){
+    public ResponseEntity<ApiResponse<ProjectResponse>>createProject(  @Valid @RequestBody CreateProjectRequest request){
         ProjectResponse response = this.projectService.createProject(request);
         return  ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true,"Project created successfully",response));
     }
 
     @PostMapping("/updateProject")
-    public ResponseEntity<ApiResponse<ProjectResponse>>updateProject(@RequestParam UUID id, @RequestBody UpdateProjectRequest request){
+    public ResponseEntity<ApiResponse<ProjectResponse>>updateProject(  @Valid @RequestParam UUID id, @RequestBody UpdateProjectRequest request){
         ProjectResponse response = this.projectService.updateProject(id,request);
         return  ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,"Project updated successfully",response));
     }
 
     @DeleteMapping("/deleteProject")
-    public  ResponseEntity<ApiResponse<Void>>deleteProject(@RequestParam UUID id){
+    public ResponseEntity<ApiResponse<Void>> deleteProject(
+            @RequestParam UUID id) {
+
         this.projectService.deleteProject(id);
+
         return ResponseEntity.noContent().build();
     }
-
 
 }

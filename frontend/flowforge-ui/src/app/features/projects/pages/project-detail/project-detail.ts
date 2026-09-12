@@ -8,9 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-project-detail',
   imports: [ReactiveFormsModule,
+    DatePipe,
     MatFormFieldModule,
       MatTooltipModule,
     FormsModule,
@@ -21,7 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './project-detail.scss',
 })
 export class ProjectDetail {
- project: Project | undefined;
+ project: any = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -31,11 +33,18 @@ export class ProjectDetail {
 
   ngOnInit(): void {
 
-    const projectId = Number(
-      this.route.snapshot.paramMap.get('id')
-    );
-
-    this.project = this.projectService.getProjectById(projectId);
+    const projectId = 
+        this.route.snapshot.paramMap.get('id')
+    
+    this.projectService.getProjectById(projectId).subscribe({
+    next:(res:any)=>{
+      
+    this.project = res?.data
+    },
+    error:(error)=>{
+      console.error('Failed to load projects', error);
+    }
+    });
 
     if (!this.project) {
       this.router.navigate(['/projects']);

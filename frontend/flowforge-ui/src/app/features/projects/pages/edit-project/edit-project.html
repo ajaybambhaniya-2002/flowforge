@@ -103,15 +103,15 @@
 
         <mat-select formControlName="status">
 
-          <mat-option value="Planning">
+          <mat-option value="PLANNING">
             Planning
           </mat-option>
 
-          <mat-option value="Active">
+          <mat-option value="ACTIVE">
             Active
           </mat-option>
 
-          <mat-option value="Completed">
+          <mat-option value="COMPLETED">
             Completed
           </mat-option>
 
@@ -145,7 +145,8 @@
         <button
           type="submit"
           class="btn-primary"
-          [disabled]="loading">
+          [disabled]="loading"
+          (click)="updateProject()">
 
           @if (loading) {
             Updating...
