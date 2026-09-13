@@ -1,0 +1,5 @@
+ALTER TABLE workflow_nodes
+ALTER COLUMN position_x TYPE DOUBLE PRECISION;
+
+ALTER TABLE workflow_nodes
+ALTER COLUMN position_y TYPE DOUBLE PRECISION;

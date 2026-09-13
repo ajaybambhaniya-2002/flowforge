@@ -91,6 +91,26 @@ public class SecurityConfig {
                                 "/api/workflows/**"
                         ).hasAnyRole("USER", "ADMIN")
 
+                        // Workflow APIs
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/workflow-nodes/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/workflow-nodes/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/workflow-nodes/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/workflow-nodes/**"
+                        ).hasAnyRole("USER", "ADMIN")
 
                         .anyRequest().authenticated()
 
