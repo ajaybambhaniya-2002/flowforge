@@ -1,0 +1,17 @@
+CREATE TABLE workflows (
+   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+   name VARCHAR(150) NOT NULL,
+
+   description VARCHAR(500),
+
+   status VARCHAR(30) NOT NULL,
+
+   version INTEGER NOT NULL DEFAULT 1,
+
+   created_by BIGINT NOT NULL,
+
+   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

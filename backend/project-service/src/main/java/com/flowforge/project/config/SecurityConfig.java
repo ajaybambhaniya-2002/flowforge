@@ -5,6 +5,7 @@ import com.flowforge.project.security.CustomAuthenticationEntryPoint;
 import com.flowforge.project.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -47,29 +48,52 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
 
-                        // Read APIs - USER and ADMIN
+                        // Project APIs
                         .requestMatchers(
-                                org.springframework.http.HttpMethod.GET,
-                                "/api/projects/**"
-                        ).hasAnyRole("USER", "ADMIN")
-
-                        // Write APIs - ADMIN only
-                        .requestMatchers(
-                                org.springframework.http.HttpMethod.POST,
+                                HttpMethod.GET,
                                 "/api/projects/**"
                         ).hasAnyRole("USER", "ADMIN")
 
                         .requestMatchers(
-                                org.springframework.http.HttpMethod.PUT,
-                                "/api/projects/**"
-                        ).hasRole("ADMIN")
-
-                        .requestMatchers(
-                                org.springframework.http.HttpMethod.DELETE,
+                                HttpMethod.POST,
                                 "/api/projects/**"
                         ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/projects/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/projects/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+
+                        // Workflow APIs
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/workflows/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/workflows/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/workflows/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/workflows/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
 
                         .anyRequest().authenticated()
+
                 )
 
                 .addFilterBefore(
